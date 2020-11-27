@@ -13,8 +13,9 @@ export default function TableNew({
         {headerGroups.map(headerGroup => (
           <tr key={headerGroup} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th key={column} {...column.getHeaderProps()}>
+              <th key={column} {...column.getHeaderProps(column.getSortByToggleProps())}>
                 {column.render('Header')}
+                <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
               </th>
             ))}
           </tr>
