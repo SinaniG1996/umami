@@ -14,7 +14,7 @@ import Arrow from 'assets/arrow-right.svg';
 import { get } from 'lib/web';
 import { TOKEN_HEADER } from 'lib/constants';
 import { useRouter } from 'next/router';
-import { useTable, usePagination } from 'react-table';
+import { useTable, usePagination, useSortBy } from 'react-table';
 import { setWebsitesData } from 'redux/actions/websites';
 import find from 'lodash.find';
 import Loader from 'react-loader-spinner';
@@ -130,6 +130,7 @@ export default function WebsiteList({ userId }) {
       data: websites,
       initialState: { pageIndex: 0, pageSize: 50 },
     },
+    useSortBy,
     usePagination,
   );
 
