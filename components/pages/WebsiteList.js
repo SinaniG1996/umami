@@ -36,7 +36,7 @@ export default function WebsiteList({ userId }) {
   }, [fetchedData.data]);
 
   const getStats = async () => {
-    const url = `/api/website/stats`;
+    const url = '/api/website/stats';
     get(
       `${basePath}${url}`,
       {
@@ -54,7 +54,7 @@ export default function WebsiteList({ userId }) {
 
   useLayoutEffect(() => {
     getStats();
-  }, [fetchedData.data, stats.length]);
+  }, [fetchedData.data, stats.length, value]);
 
   useEffect(() => {
     if (!fetchedData.data || !stats.length) return [];
@@ -66,7 +66,7 @@ export default function WebsiteList({ userId }) {
     });
 
     dispatch(setWebsitesData(_data));
-  }, [fetchedData.data, stats.length]);
+  }, [fetchedData.data, stats.length, value]);
 
   const tableColumns = useMemo(
     () => [
@@ -128,7 +128,16 @@ export default function WebsiteList({ userId }) {
     {
       columns: tableColumns,
       data: websites,
-      initialState: { pageIndex: 0, pageSize: 50 },
+      initialState: {
+        pageIndex: 0,
+        pageSize: 50,
+        sortBy: [
+          {
+            id: 'pageviews',
+            desc: true,
+          },
+        ],
+      },
     },
     useSortBy,
     usePagination,
