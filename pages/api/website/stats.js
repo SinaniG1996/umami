@@ -10,24 +10,24 @@ export default async (req, res) => {
     const ids = req.query.ids.split(',').map(id => +id.trim());
 
     const websitesStats = await Promise.all(
-      ids.map(id => {
+      ids.map(async id => {
         req.query.id = id;
-        return websiteStats(req, res);
+        let data = await websiteStats(req, res, id);
+        return { id, data };
       }),
     );
-
     return ok(res, websitesStats);
   }
 
   return methodNotAllowed(res);
 };
 
-async function websiteStats(req, res) {
+async function websiteStats(req, res, id) {
   if (!(await allowQuery(req))) {
     return unauthorized(res);
   }
 
-  const { id, start_at, end_at, url } = req.query;
+  const { start_at, end_at, url } = req.query;
 
   const websiteId = +id;
   const startDate = new Date(+start_at);
