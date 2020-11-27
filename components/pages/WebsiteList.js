@@ -30,30 +30,25 @@ export default function WebsiteList({ userId }) {
   const [dateRange, setDateRange] = useDateRange();
   const { startDate, endDate, value } = dateRange;
 
-  const websitesIds = useMemo(() => {
-    if (!fetchedData.data) return [];
+  const websiteIds = useMemo(() => {
+    if (!fetchedData.data) return [1];
     return fetchedData.data.map(site => site.website_id);
   }, [fetchedData.data]);
 
   const getStats = async () => {
-    const websitesData = [];
-    for (let id of websitesIds) {
-      const url = `/api/website/${id}/stats`;
-      const _data = await get(
-        `${basePath}${url}`,
-        {
-          start_at: +startDate,
-          end_at: +endDate,
-          url,
-        },
-        {
-          [TOKEN_HEADER]: shareToken?.token,
-        },
-      );
-      websitesData.push({ data: _data.data, id });
-    }
-    return Promise.all(websitesData).then(res => {
-      setStats(res);
+    const url = `/api/website/stats`;
+    get(
+      `${basePath}${url}`,
+      {
+        ids: websiteIds,
+        start_at: +startDate,
+        end_at: +endDate,
+      },
+      {
+        [TOKEN_HEADER]: shareToken?.token,
+      },
+    ).then(res => {
+      if (res.ok) setStats(res.data);
     });
   };
 
