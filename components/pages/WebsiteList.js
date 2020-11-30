@@ -54,7 +54,7 @@ export default function WebsiteList({ userId }) {
 
   useLayoutEffect(() => {
     getStats();
-  }, [fetchedData.data, stats.length, value]);
+  }, [JSON.stringify(fetchedData.data), value]);
 
   useEffect(() => {
     if (!fetchedData.data || !stats.length) return [];
@@ -66,7 +66,7 @@ export default function WebsiteList({ userId }) {
     });
 
     dispatch(setWebsitesData(_data));
-  }, [fetchedData.data, stats.length, value]);
+  }, [JSON.stringify(fetchedData.data), JSON.stringify(stats), value]);
 
   const tableColumns = useMemo(
     () => [
